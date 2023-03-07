@@ -8,6 +8,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
+// handles the request to GET an article
 func (app *AppConfig) GetArticle(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	vars := mux.Vars(r)
@@ -30,6 +31,7 @@ func (app *AppConfig) GetArticle(w http.ResponseWriter, r *http.Request) {
 	app.writeJSON(w, http.StatusOK, responseBody)
 }
 
+// handles the request to GET article list
 func (app *AppConfig) GetArticles(w http.ResponseWriter, r *http.Request) {
 	articles, err := app.articleService.GetArticles(r.Context())
 	if err != nil {
@@ -44,6 +46,7 @@ func (app *AppConfig) GetArticles(w http.ResponseWriter, r *http.Request) {
 	app.writeJSON(w, http.StatusOK, responseBody)
 }
 
+// handles the request to create an article
 func (app *AppConfig) CreateArticle(w http.ResponseWriter, r *http.Request) {
 	var itemToCreate models.Article
 	err := app.readJSON(w, r, &itemToCreate)

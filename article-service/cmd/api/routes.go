@@ -6,6 +6,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
+// sets up the routes for http server
 func (app *AppConfig) routes() http.Handler {
 	router := mux.NewRouter()
 

@@ -171,6 +171,10 @@ func TestArticleService_CreateArticle(t *testing.T) {
 			if _, err := uuid.Parse(got.Id); err != nil {
 				t.Errorf("ArticleService.CreateArticle() = %v, want uuid formatted string", got)
 			}
+			err = tt.s.DeleteArticleById(got.Id)
+			if err !=nil {
+				t.Errorf("Error while deleting the record: %v", err)
+			}
 		})
 	}
 }

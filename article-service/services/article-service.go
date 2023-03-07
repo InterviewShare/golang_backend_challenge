@@ -20,6 +20,7 @@ func NewArticleService(dbClient *sql.DB) *ArticleService {
 	}
 }
 
+// gets article by id from database
 func (s *ArticleService) GetArticleById(ctx context.Context, ID string) (*models.Article, error) {
 	query := "SELECT * FROM articles WHERE id = ?"
 	ctx, cancelfunc := context.WithTimeout(ctx, 5*time.Second)
@@ -35,6 +36,7 @@ func (s *ArticleService) GetArticleById(ctx context.Context, ID string) (*models
 	return &article, nil
 }
 
+// gets article list from database
 func (s *ArticleService) GetArticles(ctx context.Context) ([]models.Article, error) {
 	query := "SELECT * FROM articles"
 	ctx, cancelfunc := context.WithTimeout(ctx, 5*time.Second)
@@ -58,6 +60,7 @@ func (s *ArticleService) GetArticles(ctx context.Context) ([]models.Article, err
 	return articleList, nil
 }
 
+// creates an article on the database
 func (s *ArticleService) CreateArticle(ctx context.Context, a models.Article) (*struct{Id string}, error) {
 
 	uid := uuid.New()
@@ -81,17 +84,10 @@ func (s *ArticleService) CreateArticle(ctx context.Context, a models.Article) (*
     return data, nil
 }
 
-// func (s *ArticleService) DeleteArticleById(ctx context.Context, ID string) error {
-// 	query := "DELETE FROM articles WHERE id = ?"
-// 	ctx, cancelfunc := context.WithTimeout(ctx, 5*time.Second)
-//     defer cancelfunc()
-
-// 	var article models.Article
-// 	err := s.dbClient.QueryRowContext(ctx, query, ID).Scan(&article.ID, &article.Title, &article.Content, &article.Author)
-// 	if err != nil {
-// 		fmt.Printf("ERROR SELECT QUERY - %s", err)
-// 		return nil, err
-// 	}
-	
-// 	return &article, nil
-// }
+func (s *ArticleService) DeleteArticleById(id string) error {
+	_, err := s.dbClient.Exec("DELETE FROM articles WHERE id = ?", id)
+	if err != nil {
+		return err
+	}
+	return nil
+}

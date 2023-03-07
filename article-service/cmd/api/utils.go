@@ -14,6 +14,7 @@ type jsonResponse struct {
 	Data any `json:"data"`
 }
 
+// reads the body from the http request
 func (app *AppConfig) readJSON(w http.ResponseWriter, r *http.Request, data any) error {
 	maxBytes := 1048576 // one megabyte
 
@@ -33,6 +34,7 @@ func (app *AppConfig) readJSON(w http.ResponseWriter, r *http.Request, data any)
 	return nil
 }
 
+// writes to the response body
 func (app *AppConfig) writeJSON(w http.ResponseWriter, status int, data any, headers ...http.Header) error {
 	out, err := json.Marshal(data)
 	if err != nil {
@@ -55,6 +57,7 @@ func (app *AppConfig) writeJSON(w http.ResponseWriter, status int, data any, hea
 	return nil
 }
 
+// writes error to the response body
 func (app *AppConfig) errorJSON(w http.ResponseWriter, err error, status ...int) error {
 	statusCode := http.StatusBadRequest
 
